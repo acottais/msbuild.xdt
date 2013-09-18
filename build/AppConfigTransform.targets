@@ -24,7 +24,7 @@
     
   </PropertyGroup>
 
-  <Target Name="TransformConfigFiles" >
+  <Target Name="TransformConfigFiles" Condition="'$(EnableConfigTransform)'=='true' and Exists('$(TransFormFile)')">
     <Message Text="Transforming $(ConfigFilename) using $(TransFormFile)" Importance="high"/>
     <ConfigTransform ConfigFilename="$(ConfigFilename)" TransFormFile="$(TransFormFile)" XdtLibPathFull="$(XdtLib)"/>
     
