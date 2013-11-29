@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-
     <EnableConfigTransform Condition="'$(EnableConfigTransform)'==''">true</EnableConfigTransform>
 
     <TransformConfiguration Condition="'$(TransformConfiguration)'==''">$(Configuration)</TransformConfiguration>
     <ConfigFilename>app.config</ConfigFilename>
-    <ConfigFilename  Condition="'$(OutputType)'=='Exe' and Exists('$(OutputPath)\$(AssemblyName).exe.config')">$(OutputPath)\$(AssemblyName).exe.config</ConfigFilename>
+    <ConfigFilename  Condition="'$(OutputType)'=='Exe'">$(OutputPath)\$(AssemblyName).exe.config</ConfigFilename>
     <ConfigFilename  Condition="'$(OutputType)'!='Exe' and Exists('$(OutputPath)\$(AssemblyName).dll.config')">$(OutputPath)\$(AssemblyName).dll.config</ConfigFilename>
    
     <TransFormFile  Condition="Exists('$(MSBuildProjectDirectory)\app.config')">$(MSBuildProjectDirectory)\app.$(TransformConfiguration).config</TransFormFile>
@@ -21,13 +20,11 @@
       $(BuildDependsOn);
       TransformConfigFiles;
     </BuildDependsOn>
-    
   </PropertyGroup>
 
   <Target Name="TransformConfigFiles" >
     <Message Text="Transforming $(ConfigFilename) using $(TransFormFile)" Importance="high"/>
     <ConfigTransform ConfigFilename="$(ConfigFilename)" TransFormFile="$(TransFormFile)" XdtLibPathFull="$(XdtLib)"/>
-    
   </Target>
   
   <UsingTask TaskName="ConfigTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -68,6 +65,4 @@
       </Code>
     </Task>
   </UsingTask>
-  
- 
 </Project>
