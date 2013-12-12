@@ -12,7 +12,7 @@
 
     <TransformConfiguration Condition="'$(TransformConfiguration)'==''">$(Configuration)</TransformConfiguration>
     <ConfigFilename>app.config</ConfigFilename>
-    <ConfigFilename  Condition="'$(OutputType)'=='Exe' and Exists('$(OutputPath)\$(AssemblyName).exe.config')">$(OutputPath)\$(AssemblyName).exe.config</ConfigFilename>
+    <ConfigFilename  Condition="'$(OutputType)'=='Exe'">$(OutputPath)\$(AssemblyName).exe.config</ConfigFilename>
     <ConfigFilename  Condition="'$(OutputType)'!='Exe' and Exists('$(OutputPath)\$(AssemblyName).dll.config')">$(OutputPath)\$(AssemblyName).dll.config</ConfigFilename>
    
     <TransFormFile  Condition="Exists('$(MSBuildProjectDirectory)\app.config')">$(MSBuildProjectDirectory)\app.$(TransformConfiguration).config</TransFormFile>
