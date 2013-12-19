@@ -12,22 +12,42 @@
 
     <TransformConfiguration Condition="'$(TransformConfiguration)'==''">$(Configuration)</TransformConfiguration>
     <ConfigFilename>app.config</ConfigFilename>
-    <ConfigFilename  Condition="'$(OutputType)'=='Exe'">$(OutputPath)\$(AssemblyName).exe.config</ConfigFilename>
-    <ConfigFilename  Condition="'$(OutputType)'!='Exe' and Exists('$(OutputPath)\$(AssemblyName).dll.config')">$(OutputPath)\$(AssemblyName).dll.config</ConfigFilename>
+    <ConfigFilename  Condition="'$(OutputType)'=='Exe' Or '$(OutputType)'=='WinExe' ">$(OutputPath)$(AssemblyName).exe.config</ConfigFilename>
+    <ConfigFilename  Condition="'$(OutputType)'=='Library' ">$(OutputPath)$(AssemblyName).dll.config</ConfigFilename>
    
     <TransFormFile  Condition="Exists('$(MSBuildProjectDirectory)\app.config')">$(MSBuildProjectDirectory)\app.$(TransformConfiguration).config</TransFormFile>
     <!-- Make the build depend on tranform config files if enabled -->
     <BuildDependsOn Condition="'$(EnableConfigTransform)' == 'true' and Exists('$(MSBuildProjectDirectory)\app.config')">
       $(BuildDependsOn);
-      TransformConfigFiles;
+      <!--TransformConfigFiles;-->
     </BuildDependsOn>
-    
+    <!--<GenerateManifestsDependsOn Condition="'$(EnableConfigTransform)' == 'true' and Exists('$(MSBuildProjectDirectory)\app.config')">
+      ChangeClickOncePublishAppConfig;
+      $(GenerateManifestsDependsOn);      
+    </GenerateManifestsDependsOn>-->
   </PropertyGroup>
 
-  <Target Name="TransformConfigFiles" Condition="'$(EnableConfigTransform)'=='true' and Exists('$(TransFormFile)')">
+  <Target Name="TransformConfigFiles" Condition="'$(EnableConfigTransform)'=='true' and Exists('$(TransFormFile)')" AfterTargets="Build;_CopyAppConfigFile">
+    <Message Text="Transforming : Project OutputType is $(OutputType)" Importance="Low"/>
     <Message Text="Transforming $(ConfigFilename) using $(TransFormFile)" Importance="high"/>
     <ConfigTransform ConfigFilename="$(ConfigFilename)" TransFormFile="$(TransFormFile)" XdtLibPathFull="$(XdtLib)"/>
+  </Target>
+
+  <Target Name="ChangeClickOncePublishAppConfig" Condition="'$(EnableConfigTransform)'=='true' and Exists('$(ConfigFilename)')" 
+          BeforeTargets="_DeploymentComputeClickOnceManifestInfo">
+    <Message Text="Altering  AppConfigWithTargetPath" Importance="high"/>
+    <PropertyGroup>
+      <_OldAppConfigWithTargetPath>%(AppConfigWithTargetPath.TargetPath)</_OldAppConfigWithTargetPath>
+    </PropertyGroup>
+    <Message Text="_OldAppConfigWithTargetPath:$(_OldAppConfigWithTargetPath)" Importance="high"/>
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="@(AppConfigWithTargetPath)" />
+      <AppConfigWithTargetPath Include="$(ConfigFilename)">
+        <TargetPath>$(_OldAppConfigWithTargetPath)</TargetPath>
+      </AppConfigWithTargetPath>
+    </ItemGroup>
     
+    <Message Text="Altering  AppConfigWithTargetPath done" Importance="high"/>
   </Target>
   
   <UsingTask TaskName="ConfigTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -50,7 +70,7 @@
                 try {
                 
                  XmlDocument xDoc=new XmlDocument();
-                 Log.LogMessage("Loading configuration file...");
+                 Log.LogMessage("Loading configuration file... "+ConfigFilename);
                  xDoc.Load(ConfigFilename);
                  Log.LogMessage("Applying transformation for configuration...");
                    Assembly xdtAssembly=Assembly.UnsafeLoadFrom(XdtLibPathFull);
