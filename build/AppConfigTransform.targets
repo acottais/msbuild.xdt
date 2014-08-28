@@ -19,12 +19,12 @@
     <!-- Make the build depend on tranform config files if enabled -->
     <BuildDependsOn Condition="'$(EnableConfigTransform)' == 'true' and Exists('$(MSBuildProjectDirectory)\app.config')">
       $(BuildDependsOn);
-      <!--TransformConfigFiles;-->
+      TransformConfigFiles;
     </BuildDependsOn>
-    <!--<GenerateManifestsDependsOn Condition="'$(EnableConfigTransform)' == 'true' and Exists('$(MSBuildProjectDirectory)\app.config')">
+    <GenerateManifestsDependsOn Condition="'$(EnableConfigTransform)' == 'true' and Exists('$(MSBuildProjectDirectory)\app.config')">
       ChangeClickOncePublishAppConfig;
       $(GenerateManifestsDependsOn);      
-    </GenerateManifestsDependsOn>-->
+    </GenerateManifestsDependsOn>
   </PropertyGroup>
 
   <Target Name="TransformConfigFiles" Condition="'$(EnableConfigTransform)'=='true' and Exists('$(TransFormFile)')" AfterTargets="Build;_CopyAppConfigFile">

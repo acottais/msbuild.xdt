@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <!-- $Id$ -->
   <PropertyGroup>
-    <XdtLibPath Condition="'$(XdtLibPath)' == ''">$(MSBuildThisFileDirectory)</XdtLibPath>
+    <XdtLibPath Condition="'$(XdtLibPath)' == ''">$(MSBuildThisFileDirectory)..\..\Microsoft.Web.Xdt.1.0.0\lib\net40</XdtLibPath>
   </PropertyGroup>
 
 </Project>

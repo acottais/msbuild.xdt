@@ -6,13 +6,16 @@
         <title>AppConfig XML Transform</title>
         <authors>acottais</authors>
         <owners>acottais</owners>
+        <projectUrl>https://github.com/acottais/msbuild.xdt</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>App.config XML Transformation using the XDT engine like in Web Transformation</description>
+        <dependencies>
+            <dependency id="Microsoft.Web.Xdt" version="[1.0.0]" />
+        </dependencies>
     </metadata>
     <files>
         <file src="build\AppConfigTransform.props" target="build\AppConfigTransform.props" />
         <file src="build\AppConfigTransform.targets" target="build\AppConfigTransform.targets" />
-        <file src="build\Microsoft.Web.XmlTransform.dll" target="build\Microsoft.Web.XmlTransform.dll" />
         <file src="tools\App.template.config" target="tools\App.template.config" />
         <file src="tools\AppConfigTransform.psm1" target="tools\AppConfigTransform.psm1" />
         <file src="tools\Init.ps1" target="tools\Init.ps1" />
