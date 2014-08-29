@@ -19,5 +19,6 @@
         <file src="tools\App.template.config" target="tools\App.template.config" />
         <file src="tools\AppConfigTransform.psm1" target="tools\AppConfigTransform.psm1" />
         <file src="tools\Init.ps1" target="tools\Init.ps1" />
+        <file src="tools\Install.ps1" target="tools\Install.ps1" />
     </files>
 </package>
