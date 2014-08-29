@@ -10,7 +10,6 @@ A simple Nuget Package that enable App.Config Transformations based on the Micro
 ```
 Install-Package AppConfigTransform 
 ```
-2. Manually Remove the reference to Microsoft.Web.Xdt on your project (added from the dependency of the package).
 
 ### Adding new transformation
 
